@@ -7,11 +7,13 @@ var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
 var passport = require('passport');
 var session = require('express-session');
+var redisStore = require('connect-redis')(session);
 var flash    = require('connect-flash');
 
 var dbConfig = require('./config/db.js');
-mongoose.connect(dbConfig.url, function(){
-    console.log('database: ' + dbConfig.url);
+mongoose.connect(dbConfig.url, function(err){
+    if (err){ throw err; } else {console.log('database: ' + dbConfig.url);}
+
 });
 
 
@@ -20,8 +22,10 @@ require('./config/passport')(passport);
 var app = express();
 
 app.use(session({
+    key: 'cebutindahan',
     secret: 'letsgocebu2015',
     name: 'cebutindahan',
+    store: new redisStore(),
     proxy: true,
     resave: true,
     saveUninitialized: true

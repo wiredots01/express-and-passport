@@ -1,24 +1,35 @@
 extends layout
 
 block content
-  p.text-center Welcome to #{title}
+  h1.text-center
+    | &nbsp; Welcome to #{title}
   .jumbotron.text-center
-    h1
-      span.fa.fa-lock
-      | Social Authentication
-    p Login or Register with:
-    a.btn.btn-default(href='/login')
-      span.fa.fa-user
-      | Local Login
-    a.btn.btn-default(href='/signup')
-      span.fa.fa-user
-      | Local Signup
-    a.btn.btn-primary(href='/auth/facebook')
-      span.fa.fa-facebook
-      | Facebook
-    a.btn.btn-info(href='/auth/twitter')
-      span.fa.fa-twitter
-      | Twitter
-    a.btn.btn-danger(href='/auth/google')
-      span.fa.fa-google-plus
-      | Google+
+    input(ng-model="test")
+    | {{test}}
+    if user
+      p
+        | Welcome #{user.name}
+        if user.avatar
+          img(src="#{user.avatar}")
+      a.btn.btn-default.btn-sm(href='/logout', target="_self") Logout
+      p
+        a.btn.btn-default.btn-sm(href='/room1', target="_self") Room1
+        br
+        a.btn.btn-default.btn-sm(href='/room2', target="_self") Room2
+
+    else
+      p Login with
+      a.btn.btn-primary(href='/auth/facebook')
+        span.fa.fa-facebook
+        | &nbsp;
+        | Facebook
+      | &nbsp;
+      a.btn.btn-info(href='/auth/twitter', target="_self")
+        span.fa.fa-twitter
+        | &nbsp;
+        | Twitter
+      | &nbsp;
+      a.btn.btn-danger(href='/auth/google', target="_self")
+        span.fa.fa-google-plus
+        | &nbsp;
+        | Google+

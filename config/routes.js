@@ -1,7 +1,8 @@
 module.exports = function(app, passport) {
 	// ====================== NORMAL ROUTES ====================== //
 	app.get('/', function(req, res) {
-		res.render('index', { title: 'Express' });
+		console.log("taya nimo oi!",req.headers.host);
+		res.render('index', { title: 'Express', user : setUserData(req.user), base: req.headers.host });
 	});
 
 	app.get('/profile', isLoggedIn, function(req, res) {
@@ -13,6 +14,10 @@ module.exports = function(app, passport) {
 	app.get('/logout', function(req, res) {
 		req.logout();
 		res.redirect('/');
+	});
+
+	app.get('/test', function(req, res){
+		res.render('chat');
 	});
 
 	// ====================== AUTHENTICATION ====================== //
@@ -146,3 +151,26 @@ function isLoggedIn(req, res, next) {
 		return next();
 	res.redirect('/');
 }
+
+function setUserData(user){
+	filteredUser = null;
+	if (user){
+		switch(user.primary){
+			case 'facebook':
+				filteredUser = user.facebook;
+				break;
+			case 'twitter':
+				filteredUser = user.twitter;
+				break;
+			case 'google':
+				filteredUser = user.google;
+				break;
+			default:
+				filteredUser = {};
+				break;
+		}
+	}
+  return filteredUser;
+}
+
+
